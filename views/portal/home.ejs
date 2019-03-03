@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Newspaper</title>
+</head>
+<body>
+	<h1> Welcome home, <%=name%></h1>  <a href="#">logout</a>
+
+    <% if(info.type==1){ %>
+	<table border="1" width="400px" align="center">
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Type</th>
+		</tr>
+		<tr>
+			<td><%= info.id %></td>
+            <td><%= info.email %></td>
+			<td>editor</td>
+		</tr>
+    </table>
+    <% } %>
+    <%if(info.type==2){ %>
+        <table border="1" width="400px" align="center">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            <tr>
+                <td><%= info.id %></td>
+                <td><%= info.email %></td>
+                <td>reporter</td>
+            </tr>
+        </table>
+        <% } %>
+</body>
+</html>
