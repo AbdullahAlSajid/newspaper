@@ -35,3 +35,4 @@ app.get('/portal',(req,res)=>res.render('portal/index'));
 app.listen(3000,function(){
     console.log('server started at 4000');
 });
+

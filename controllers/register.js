@@ -8,7 +8,8 @@ router.get('/',(req,res)=>res.render('website/register'));
 router.post('/',function(req,res){
     var user = {
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        name: req.body.name
     };
 
     userModel.insert(user,function(success){
