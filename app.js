@@ -32,6 +32,6 @@ app.get('/portal',(req,res)=>res.render('portal/index'));
 
 
 //Server Startup
-app.listen(5000,function(){
+app.listen(3000,function(){
     console.log('server started at 4000');
 });
