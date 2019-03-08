@@ -31,13 +31,23 @@ module.exports = {
 		})
 	},
 	insert: function(user, callback){
-		var sql = "insert into user values(null, '"+ user.email+"', '"+ user.password+"', 2, 0)"
+		var sql = "insert into user values(null, '"+ user.email+"','"+ user.name+"','"+ user.password+"', 2, 0)"
 		db.execute(sql, function(success){
 			callback(success);
 		});
 	},
 	update: function(user, callback){
-		var sql = "update user set username='"+user.uname+"', password='"+user.password+"', type='"+user.type+"' where id="+user.id;
+		var sql = "update user set name='"+user.name+"',  email ='"+user.email+"' where id="+user.id;
+		db.execute(sql, function(status){
+			if(status){
+				callback(true);
+			}else{
+				callback(false);
+			}
+		});
+	},
+	approve: function(user, callback){
+		var sql = "update user set status = 1 where id="+user.id;
 		db.execute(sql, function(status){
 			if(status){
 				callback(true);
