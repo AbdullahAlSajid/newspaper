@@ -1,5 +1,4 @@
 var express = require('express');
-var db = require.main.require('./model/db');
 var userModel = require.main.require('./model/user_model');
 var router = express.Router();
 
@@ -15,8 +14,9 @@ router.post('/',function(req,res){
 
     userModel.validate(user, function(result){
         if(result != ""){
-            req.session.un = req.body.uname;
+            req.session.un = result.name;
             req.session.uid = result.id;
+            req.session.type = result.type
 
             res.redirect('/home');
         }else{
