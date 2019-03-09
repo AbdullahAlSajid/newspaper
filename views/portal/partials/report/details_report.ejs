@@ -3,35 +3,32 @@
           <h4 class="card-title">Report Details</h4>
           <form class="forms-sample" method="POST">
             <div class="form-group">
-              <label for="exampleInputName1">Title</label>
-              <input type="text" class="form-control" id="exampleInputName1" name="title" disabled>
+              <label for="exampleInputName1"><b>Title :</b> <%= report.title %></label>
             </div>
             <div class="form-group">
-                <label for="exampleInputName1">Category</label>
-                <input type="text" class="form-control" id="exampleInputName1" name="category" disabled>
+                <label for="exampleInputName1">
+                    <b>Category :</b>  <% for(var i=0; i<categoryList.length; i++){%>
+                                    <% if(categoryList[i].id == report.category){%>
+                                        <%= categoryList[i].name%>
+                                <%}}%>
+                </label>
             </div>
             <div class="form-group">
-                <label for="exampleInputName1">Status</label>
-                <input type="text" class="form-control" id="exampleInputName1" name="status" disabled>
+                <label for="exampleInputName1">
+                   <b>Status :</b>   <%if (report.status == 0 ) {%>
+                        Pending
+                      <% } else if(report.status == 1) {%>
+                        Approved
+                      <% } else if(report.status == 2) {%>
+                        Edit Requsted
+                      <% } else if(report.status == 3) {%>
+                        Delete Requsted
+                      <%}%></label>
             </div>
             <div class="form-group">
-                <label for="exampleFormControlSelect2">Category</label>
-                <select class="form-control" name="category">
-                <% for(var i = 0 ; i < categoryList.length; i++){ %>
-                    <option value="<%= categoryList[i].id %>"><%= categoryList[i].name %></option>
-                <%}%>
-                </select>
+              <label for="exampleTextarea1"><b>Description :</b></label>
+              <p><%=report.description%></p>
             </div>
-            <!-- <div class="form-group">
-              <label>Image</label>
-              <br>
-              <input class="form-control" type="file" name="uploaded_image" accept>
-            </div> -->
-            <div class="form-group">
-              <label for="exampleTextarea1">Description</label>
-              <textarea class="form-control" id="exampleTextarea1" rows="5" name="description"></textarea>
-            </div>
-            <button type="submit" class="btn btn-success mr-2">Submit</button>
           </form>
         </div>
       </div>
