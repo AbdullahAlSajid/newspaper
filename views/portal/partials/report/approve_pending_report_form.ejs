@@ -1,7 +1,7 @@
 <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Edit Report</h4>
-          <form class="forms-sample" method="POST" action="/home/report/myreport/edit/<%=report.id%>">
+          <h4 class="card-title">Approve Pending Report</h4>
+          <form class="forms-sample" method="POST" action="/home/report/pending/edit/<%=report.id%>">
             <div class="form-group">
               <label for="exampleInputName1"><b>Title :</b></label>
               <input type="text" class="form-control" id="exampleInputName1" name="title" value="<%= report.title %>">
@@ -14,11 +14,24 @@
                             <%if(categoryList[i].id==report.category){%>
                                  selected 
                                  <%}%>
-                        ><%= categoryList[i].name %></option>
+                        </option><%= categoryList[i].name %></option>
                     <%}%>
                 </select>
-    
             </div>
+            <div class="form-group">
+                <label for="exampleInputName1"><b>Section :</b></label>
+                <select class="form-control" name="section">
+                    <option value="0"></option>
+                    <option value="1">Editor's Pick</option>
+                    <option value="2">Popular</option>
+                    <option value="3">Main Portion</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputName1"><b>Breaking News :</b></label><br>
+                <input type="radio" name="breaking" value="1"> Yes <br>
+                <input type="radio" name="breaking" value="0" checked="checked"> No<br> 
+                </div>
             <div class="form-group">
               <label for="exampleTextarea1"><b>Description :</b></label>
               <textarea class="form-control" id="exampleTextarea1" rows="10" name="description"><%=report.description%></textarea>
