@@ -17,13 +17,19 @@ module.exports = {
 		db.getResults(sql, function(results){
 			callback(results);
 		});
-    },
-    getAllMy: function(reporterId,callback){
+  },
+	getAllMy: function(reporterId,callback){
 		var sql = "select * from report where reporter ="+reporterId;
 		db.getResults(sql, function(results){
 			callback(results);
 		});
 	},
+	getAllByStatus: function(status,callback){
+		var sql = "select * from report where status ="+status;
+		db.getResults(sql, function(results){
+			callback(results);
+		});
+  },
 	validate: function(report, callback){
         var sql = "select * from report where email = '" + report.email + "' and password = '" + user.password + "' and status = 1 ";
 		db.getResults(sql, function(result){
@@ -33,7 +39,7 @@ module.exports = {
 			}else{
 				callback([]);
 			}
-		})
+		});
 	},
 	insert: function(report, callback){
 		var sql = "insert into report values(null, '"+ report.title+"','"+ report.description+"','"+ report.category+"', 0, '"+ report.reporterId+"',0,'"+report.date+"','null','null',0,'null')";
@@ -41,13 +47,7 @@ module.exports = {
 			callback(success);
 		});
     },
-    // insert: function(user, callback){
-	// 	var sql = "insert into user values(null, '"+ user.email+"','"+ user.name+"','"+ user.password+"', 2, 0)"
-	// 	db.execute(sql, function(success){
-	// 		callback(success);
-	// 	});
-	// },
-    editorInsert: function(report, callback){
+  editorInsert: function(report, callback){
 		var sql = "insert into report values(null, '"+ user.email+"','"+ user.name+"','"+ user.password+"', 2, 0)"
 		db.execute(sql, function(success){
 			callback(success);
@@ -63,8 +63,28 @@ module.exports = {
 			}
 		});
     },
-    reporterUpdate: function(report, callback){
+  reporterUpdate: function(report, callback){
 		var sql = "update report set title='"+report.title+"',  category ='"+report.category+"',  description ='"+report.description+"',  status = 2 where id="+report.id;
+		db.execute(sql, function(status){
+			if(status){
+				callback(true);
+			}else{
+				callback(false);
+			}
+		});
+	},
+	editorPendingUpdate: function(report, callback){
+		var sql = "update report set title='"+report.title+"',  category ='"+report.category+"', section ='"+report.section+"', breaking ='"+report.breaking+"', publishedat ='"+report.date+"',  description ='"+report.description+"',  status = 1 where id="+report.id;
+		db.execute(sql, function(status){
+			if(status){
+				callback(true);
+			}else{
+				callback(false);
+			}
+		});
+	},
+	editorActiveUpdate: function(report, callback){
+		var sql = "update report set title='"+report.title+"',  category ='"+report.category+"', section ='"+report.section+"', breaking ='"+report.breaking+"', updatedat ='"+report.date+"',  description ='"+report.description+"',  status = 1 where id="+report.id;
 		db.execute(sql, function(status){
 			if(status){
 				callback(true);

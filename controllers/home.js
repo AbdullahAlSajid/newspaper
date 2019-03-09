@@ -284,6 +284,222 @@ router.post("/report/myreport/delete/:id", function(req, res){
     });
 });
 
+router.get('/report/pending',function(req,res){
+    if(req.session.type == 1){
+        reportModel.getAllByStatus(0,function(results){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        reportList: results,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/pending_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/report/pending/:id', function(req, res){
+    if(req.session.type == 1){
+        reportModel.get(req.params.id, function(result){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        report: result,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/show_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/report/pending/edit/:id', function(req, res){
+    if(req.session.type == 1){
+        reportModel.get(req.params.id, function(result){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        report: result,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/approve_pending_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post("/report/pending/edit/:id", function(req, res){
+    if(req.session.type == 1){
+        var report = {
+            id: req.params.id,
+            title: req.body.title,
+            category: req.body.category,
+            description: req.body.description,
+            section: req.body.section,
+            breaking: req.body.breaking,
+            date: new Date(),
+        };
+        reportModel.editorPendingUpdate(report, function(status){
+            if(status){
+                res.redirect('/home/report/pending');
+            }else{
+                res.redirect('/home/report/pending/edit/:'+req.params.id);
+            }
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post("/report/pending/delete/:id", function(req, res){
+    if(req.session.type == 1){
+        var report = {
+            id: req.params.id,
+        };
+
+        reportModel.delete(report, function(status){
+
+            if(status){
+                res.redirect('/home/report/pending');
+            }else{
+                res.redirect('/home/report/pending');
+            }
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/report/active',function(req,res){
+    if(req.session.type == 1){
+        reportModel.getAllByStatus(1,function(results){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        reportList: results,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/active_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/report/active/:id', function(req, res){
+    if(req.session.type == 1){
+        reportModel.get(req.params.id, function(result){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        report: result,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/show_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/report/active/edit/:id', function(req, res){
+    if(req.session.type == 1){
+        reportModel.get(req.params.id, function(result){
+            categoryModel.getAll(function(categoryResults){
+                userModel.getAll(function(reporterResults){
+                    var data = {
+                        id : req.session.uid,
+                        name: req.session.un,
+                        info: req.session.type,
+                        report: result,
+                        reporterList: reporterResults,
+                        categoryList: categoryResults
+                    };
+                    res.render('portal/editor_pages/edit_active_report', data);
+                });
+            });   
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post("/report/active/edit/:id", function(req, res){
+    if(req.session.type == 1){
+        var report = {
+            id: req.params.id,
+            title: req.body.title,
+            category: req.body.category,
+            description: req.body.description,
+            section: req.body.section,
+            breaking: req.body.breaking,
+            date: new Date(),
+        };
+        reportModel.editorActiveUpdate(report, function(status){
+            if(status){
+                res.redirect('/home/report/active');
+            }else{
+                res.redirect('/home/report/active/edit/:'+req.params.id);
+            }
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post("/report/active/delete/:id", function(req, res){
+    if(req.session.type == 1){
+        var report = {
+            id: req.params.id,
+        };
+
+        reportModel.delete(report, function(status){
+
+            if(status){
+                res.redirect('/home/report/active');
+            }else{
+                res.redirect('/home/report/active');
+            }
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
 
 module.exports = router;
 
