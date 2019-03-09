@@ -1,6 +1,17 @@
 var express = require('express');
 var userModel = require.main.require('./model/user_model');
+var reportModel = require.main.require('./model/report_model');
+var categoryModel = require.main.require('./model/category_model');
+var formidable = require('formidable');
 var router = express.Router();
+
+router.get('*', function(req, res, next){
+	if(req.session.un != null){
+		next();
+	}else{
+		res.redirect('/login');
+	}
+});
 
 router.get('/',function(req,res){
     if(req.session.uid != null){
@@ -127,6 +138,103 @@ router.post("/delete/:id", function(req, res){
         res.redirect('/login');
     }
 });
+
+//Report 
+
+router.get('/report/add',function(req,res){
+    categoryModel.getAll(function(results){
+	
+        var data = {
+            id : req.session.uid,
+            name: req.session.un,
+            info: req.session.type,
+            categoryList: results
+        };
+        res.render('portal/reporter_pages/add_report',data);
+    });
+});
+
+router.post('/report/add',function(req,res){
+    // var form = new formidable.IncomingForm()
+    // form.parse(req);
+    // form.on('fileBegin', function (name, file){
+    //     file.path = '../newspaper/public/uploads/reports/img/' + file.name;
+    // });
+    // form.on('file', function (name, file){
+    //     console.log('Uploaded ' + file.name);
+    // });
+
+    var report = {
+		title: req.body.title,
+		description: req.body.description,
+        category: req.body.category,
+        reporterId: req.session.uid,
+        date: new Date(),
+        // file: req.files.uploaded_image,
+		// img_name: file.name,
+    };
+    reportModel.insert(report, function(status){
+
+		if(status){
+			res.redirect('/home');
+		}else{
+			res.redirect('/home/report/add');
+		}
+	});
+});
+
+router.get('/report/myreport',function(req,res){
+    if(req.session.uid != null){
+        reportModel.getAllMy(req.session.uid,function(results){
+            categoryModel.getAll(function(categoryResults){
+                var data = {
+                    id : req.session.uid,
+                    name: req.session.un,
+                    info: req.session.type,
+                    reportList: results,
+                    categoryList: categoryResults
+                };
+                res.render('portal/reporter_pages/my_report', data);
+            });
+            
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/mail',function(req,res){
+    var data = {
+        id : req.session.uid,
+        name: req.session.un,
+        info: req.session.type,
+    };
+    res.render('portal/editor_pages/mail',data);
+});
+
+// router.get('/report/myreport/:id', function(req, res){
+
+// 	reportModel.get(req.params.id, function(result){
+//         categoryModel.getAll(function(categoryResults){
+//             var data = {
+//                 id : req.session.uid,
+//                 name: req.session.un,
+//                 info: req.session.type,
+//                 report: result,
+//                 categoryList: categoryResults
+//             };
+//             res.render('portal/reporter_pages/my_report', data);
+//         });
+        
+// 		if(result != ""){
+// 			res.render('portal/reporter_pages/my_report', result);
+// 		}else{
+// 			res.redirect('/home');
+// 		}
+// 	});
+// });
+
+
 
 module.exports = router;
 
