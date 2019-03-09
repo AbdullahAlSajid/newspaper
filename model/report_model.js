@@ -62,9 +62,29 @@ module.exports = {
 				callback(false);
 			}
 		});
+    },
+    reporterUpdate: function(report, callback){
+		var sql = "update report set title='"+report.title+"',  category ='"+report.category+"',  description ='"+report.description+"',  status = 2 where id="+report.id;
+		db.execute(sql, function(status){
+			if(status){
+				callback(true);
+			}else{
+				callback(false);
+			}
+		});
 	},
 	approve: function(report, callback){
 		var sql = "update report set status = 1 where id="+report.id;
+		db.execute(sql, function(status){
+			if(status){
+				callback(true);
+			}else{
+				callback(false);
+			}
+		});
+    },
+    reporterdelete: function(report, callback){
+        var sql = "update report set  status = 3 where id="+report.id;
 		db.execute(sql, function(status){
 			if(status){
 				callback(true);

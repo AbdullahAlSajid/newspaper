@@ -2,7 +2,6 @@ var express = require('express');
 var userModel = require.main.require('./model/user_model');
 var reportModel = require.main.require('./model/report_model');
 var categoryModel = require.main.require('./model/category_model');
-var formidable = require('formidable');
 var router = express.Router();
 
 router.get('*', function(req, res, next){
@@ -212,28 +211,78 @@ router.get('/mail',function(req,res){
     res.render('portal/editor_pages/mail',data);
 });
 
-// router.get('/report/myreport/:id', function(req, res){
+router.get('/report/myreport/:id', function(req, res){
 
-// 	reportModel.get(req.params.id, function(result){
-//         categoryModel.getAll(function(categoryResults){
-//             var data = {
-//                 id : req.session.uid,
-//                 name: req.session.un,
-//                 info: req.session.type,
-//                 report: result,
-//                 categoryList: categoryResults
-//             };
-//             res.render('portal/reporter_pages/my_report', data);
-//         });
-        
-// 		if(result != ""){
-// 			res.render('portal/reporter_pages/my_report', result);
-// 		}else{
-// 			res.redirect('/home');
-// 		}
-// 	});
-// });
+	reportModel.get(req.params.id, function(result){
+        categoryModel.getAll(function(categoryResults){
+            var data = {
+                id : req.session.uid,
+                name: req.session.un,
+                info: req.session.type,
+                report: result,
+                categoryList: categoryResults
+            };
+            if(result != ""){
+                res.render('portal/reporter_pages/show_report', data);
+            }else{
+                res.redirect('/home');
+            }
+        });
+	});
+});
 
+router.get('/report/myreport/edit/:id', function(req, res){
+
+	reportModel.get(req.params.id, function(result){
+        categoryModel.getAll(function(categoryResults){
+            var data = {
+                id : req.session.uid,
+                name: req.session.un,
+                info: req.session.type,
+                report: result,
+                categoryList: categoryResults
+            };
+            if(result != ""){
+                res.render('portal/reporter_pages/edit_report', data);
+            }else{
+                res.redirect('/home');
+            }
+        });
+	});
+});
+
+router.post("/report/myreport/edit/:id", function(req, res){
+    var report = {
+        id: req.params.id,
+        title: req.body.title,
+        category: req.body.category,
+        description: req.body.description
+    };
+
+    reportModel.reporterUpdate(report, function(status){
+
+        if(status){
+            res.redirect('/home/report/myreport');
+        }else{
+            res.redirect('/home/report/myreport/edit/:'+req.params.id);
+        }
+    });
+});
+
+router.post("/report/myreport/delete/:id", function(req, res){
+    var report = {
+        id: req.params.id,
+    };
+
+    reportModel.reporterdelete(report, function(status){
+
+        if(status){
+            res.redirect('/home/report/myreport');
+        }else{
+            res.redirect('/home/delete:'+req.params.id);
+        }
+    });
+});
 
 
 module.exports = router;
