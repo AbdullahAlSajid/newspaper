@@ -172,6 +172,7 @@ router.post('/report/add',function(req,res){
         // file: req.files.uploaded_image,
 		// img_name: file.name,
     };
+    console.log(report);
     reportModel.insert(report, function(status){
 
 		if(status){
