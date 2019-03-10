@@ -5,6 +5,7 @@ var register = require('./controllers/register');
 var logout = require('./controllers/logout');
 //var editor_user  = require('./controllers/editor/editor_user');
 var home = require('./controllers/home');
+var website = require('./controllers/website');
 var path = require('path');
 var bodyParser = require('body-parser');
 var exSession = require('express-session');
@@ -27,10 +28,11 @@ app.use('/login', login);
 app.use('/register',register);
 app.use('/home',home);
 app.use('/logout',logout);
+app.use('/',website);
 //app.use('/editor/users',editor_user);
 
 //Routes
-app.get('/',(req,res)=>res.render('website/index'));
+//app.get('/',(req,res)=>res.render('website/index'));
 app.get('/portal',(req,res)=>res.render('portal/index'));
 
 

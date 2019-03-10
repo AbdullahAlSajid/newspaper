@@ -29,7 +29,25 @@ module.exports = {
 		db.getResults(sql, function(results){
 			callback(results);
 		});
-  },
+	},
+	getBreaking: function(callback){
+		var sql = "select * from report where breaking = 1 and status = 1";
+		db.getResults(sql, function(results){
+			callback(results);
+		});
+	},
+	getInternational: function(callback){
+		var sql = "select * from report where category = 1 and status = 1";
+		db.getResults(sql, function(results){
+			callback(results);
+		});
+	},
+	getFeatured: function(callback){
+		var sql = "select * from report where section = 3 and status = 1";
+		db.getResults(sql, function(results){
+			callback(results);
+		});
+	},
 	validate: function(report, callback){
         var sql = "select * from report where email = '" + report.email + "' and password = '" + user.password + "' and status = 1 ";
 		db.getResults(sql, function(result){
