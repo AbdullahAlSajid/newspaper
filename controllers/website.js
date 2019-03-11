@@ -36,4 +36,25 @@ router.get('/',function(req,res){
     
 });
 
+// router.get('/:title',function(req,res){
+//     reportModel.getBreaking(function(breakingNews){
+//         reportModel.getInternational(function(internationalNews){
+//             categoryModel.getAll(function(results){
+//                 reportModel.getFeatured(function(featured){
+	
+//                     var data = {
+//                         title : req.params.title,
+//                         international : internationalNews,
+//                         featured : featured,
+//                         categoryList : results
+//                     };
+//                     console.log(data.categoryList)
+//                     res.render('website/index',data);
+//                 });   
+//             })
+//         })
+//     });
+
+// });
+
 module.exports = router;
